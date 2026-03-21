@@ -10,34 +10,8 @@ The APB wrapper provides an APB (Advanced Peripheral Bus) interface to configure
 - Protocol compliance
 - Register functionality
 
-### Environment Topology
-```
-UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
---------------------------------------------------------------
-Name                       Type                    Size  Value
---------------------------------------------------------------
-uvm_test_top               apb_smoke_test          -     @2660
-  env                      apb_wrapper_env         -     @2721
-    apb_agt                apb_agent               -     @2766
-      driver               apb_driver              -     @2867
-        rsp_port           uvm_analysis_port       -     @2967
-        seq_item_port      uvm_seq_item_pull_port  -     @2916
-      monitor              apb_monitor             -     @3582
-        ap                 uvm_analysis_port       -     @3687
-      sequencer            apb_sequencer           -     @2946
-        rsp_export         uvm_analysis_export     -     @3055
-        seq_item_export    uvm_seq_item_pull_imp   -     @3603
-        arbitration_queue  array                   0     -    
-        lock_queue         array                   0     -    
-        num_last_reqs      integral                32    'd1  
-        num_last_rsps      integral                32    'd1  
-    apb_ap                 uvm_analysis_port       -     @2814
---------------------------------------------------------------
-```
-```
 
 ## Register Map
-
 The APB wrapper implements the following registers at base address `0xA000_0000`:
 
 | Offset | Name             | Access | Description                    |
