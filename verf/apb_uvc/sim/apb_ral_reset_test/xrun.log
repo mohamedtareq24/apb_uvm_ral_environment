@@ -1,0 +1,282 @@
+xrun(64): 20.09-s009: (c) Copyright 1995-2021 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	20.09-s009: Started on Mar 22, 2020 at 20:42:40 +03
+xrun
+	-f ./tb/run.f
+		-timescale 1ps/1fs
+		+incdir+./
+		+incdir+./tb
+		+incdir+../if
+		+incdir+../../src
+		+incdir+./reg_verifier_dir/uvmreg
+		./reg_verifier_dir/uvmreg/cdns_uvmreg_utils_pkg.sv
+		./reg_verifier_dir/uvmreg/apb_wrapper_regs_rdb.sv
+		../if/apb_if.sv
+		../../src/apb_wrapper.sv
+		./apb_pkg.sv
+		./tb/apb_tb_top.sv
+	-top apb_wrapper_tb_top
+	-xmlibdirname sim/apb_ral_reset_test/xcelium.d
+	-64bit
+	-sv
+	-uvm
+	-access +rwc
+	+UVM_TESTNAME=apb_ral_reset_test
+	+UVM_VERBOSITY=UVM_MEDIUM
+	-svseed 1
+	-coverage U
+	-covoverwrite
+	-covworkdir /home/icer/temp
+	-covtest apb_ral_reset_test
+	-define INJECT_ERROR
+	-l sim/apb_ral_reset_test/xrun.log
+
+   User defined plus("+") options:
+	+UVM_VERBOSITY=UVM_MEDIUM
+
+Compiling UVM packages (uvm_pkg.sv cdns_uvm_pkg.sv) using uvmhome location /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d
+file: ./apb_pkg.sv
+        apb_seq.randomize();
+                        |
+xmvlog: *W,FUNTSK (tb/apb_test_lib.sv,24|24): function called as a task without void'().
+(`include file: tb/apb_test_lib.sv line 24, file: ./apb_pkg.sv line 18)
+        apb_ral_seq.randomize();
+                            |
+xmvlog: *W,FUNTSK (tb/apb_test_lib.sv,65|28): function called as a task without void'().
+(`include file: tb/apb_test_lib.sv line 65, file: ./apb_pkg.sv line 18)
+package apb_pkg;
+              |
+xmvlog: *W,TSNSPK (./apb_pkg.sv,3|14): `timescale is not specified for the package.  The default timescale of 1ns/1ns will be assumed for this package.
+file: ./tb/apb_tb_top.sv
+xmvlog: *W,SPDUSD: Include directory ./ given but not used.
+xmvlog: *W,SPDUSD: Include directory ../if given but not used.
+xmvlog: *W,SPDUSD: Include directory ../../src given but not used.
+xmvlog: *W,SPDUSD: Include directory ./reg_verifier_dir/uvmreg given but not used.
+	Total errors/warnings found outside modules and primitives:
+		errors: 0, warnings: 4
+	Elaborating the design hierarchy:
+		Caching library 'worklib' ....... Done
+	Top level design units:
+		uvm_pkg
+		cdns_uvmapi
+		cdns_assert2uvm_pkg
+		cdns_uvm_pkg
+		cdns_uvmreg_utils_pkg
+		apb_wrapper_reg_pkg
+		apb_pkg
+		apb_wrapper_tb_top
+    obj = new(name, parent);
+      |
+xmelab: *W,CNIABE (/opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/base/uvm_registry.svh,66|6): Abstract (virtual) class 'apb_ral_test_base' cannot be instantiated, detected while elaborating:
+	'class uvm_pkg::uvm_component_registry#(.T(class apb_pkg::apb_ral_test_base),.Tname("apb_ral_test_base"))' from './tb/apb_test_lib.sv' line 46.
+This is a warning for backward compatibility; it will be upgraded to an error in future releases.
+xmelab: *W,DSEMEL: This SystemVerilog design will be simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+	Building instance overlay tables: .................... Done
+	Enabling instrumentation for coverage types: functional
+	Building instance specific data structures.
+xmelab: *W,CGPIDF: Covergroup "per_instance" option , by default, is set as 0.
+xmelab: *N,COVCGN: Coverage configuration file command "set_covergroup -new_instance_reporting" can be specified to improve the scoping and naming of covergroup instances. It may be noted that subsequent merging of a coverage database saved with this command and a coverage database saved without this command is not allowed.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                       Instances  Unique
+		Modules:                       2       2
+		Interfaces:                    1       1
+		Verilog packages:              7       7
+		Registers:                 15046   10831
+		Scalar wires:                  9       -
+		Vectored wires:               22       -
+		Named events:                  4      12
+		Always blocks:                 2       2
+		Initial blocks:              342     177
+		Parallel blocks:              26      27
+		Cont. assignments:             6       6
+		Pseudo assignments:           19      19
+		Assertions:                    2       2
+		Covergroup Instances:          0      20
+		SV Class declarations:       223     336
+		SV Class specializations:    424     424
+		Simulation timescale:        1fs
+	Writing initial simulation snapshot: worklib.apb_wrapper_tb_top:sv
+Loading snapshot worklib.apb_wrapper_tb_top:sv .................... Done
+SVSEED set from command line: 1
+xmsim: *W,RNDXCELON: A newer version of the SystemVerilog constraint solver is being used which has better support for array-solving, new solve-order mechanism, and seed stability enhancements..
+xmsim: *W,DSEM2009: This SystemVerilog design is simulated as per IEEE 1800-2009 SystemVerilog simulation semantics. Use -disable_sem2009 option for turning off SV 2009 simulation semantics.
+xcelium> source /opt/rh/XCELIUM2009/tools/xcelium/files/xmsimrc
+xcelium> source /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/additions/sv/files/tcl/uvm_sim.tcl
+xcelium> run
+----------------------------------------------------------------
+CDNS-UVM-1.1d (20.09-s009)
+(C) 2007-2013 Mentor Graphics Corporation
+(C) 2007-2013 Cadence Design Systems, Inc.
+(C) 2006-2013 Synopsys, Inc.
+(C) 2011-2013 Cypress Semiconductor Corp.
+----------------------------------------------------------------
+
+  ***********       IMPORTANT RELEASE NOTES         ************
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_NO_DEPRECATED undefined.
+  See http://www.eda.org/svdb/view.php?id=3313 for more details.
+
+  You are using a version of the UVM library that has been compiled
+  with `UVM_OBJECT_MUST_HAVE_CONSTRUCTOR undefined.
+  See http://www.eda.org/svdb/view.php?id=3770 for more details.
+
+      (Specify +UVM_NO_RELNOTES to turn off this notice)
+
+UVM_INFO @ 0: reporter [RNTST] Running test apb_ral_reset_test...
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+include_coverage not located
+  did you mean hdl_path_root?
+UVM_INFO apb_env.sv(32) @ 0: uvm_test_top.env [APB_ENV] Build phase complete
+UVM_INFO apb_env.sv(41) @ 0: uvm_test_top.env [APB_ENV] Connect phase complete
+UVM_INFO tb/apb_test_lib.sv(16) @ 0: uvm_test_top [apb_ral_reset_test] Printing Test Topology...
+UVM_INFO @ 0: reporter [UVMTOP] UVM testbench topology:
+-------------------------------------------------------------------
+Name                       Type                         Size  Value
+-------------------------------------------------------------------
+uvm_test_top               apb_ral_reset_test           -     @2901
+  env                      apb_env                      -     @2962
+    apb_agt                apb_agent                    -     @3022
+      apb_ap               uvm_analysis_port            -     @4322
+      driver               apb_driver                   -     @3508
+        rsp_port           uvm_analysis_port            -     @3608
+        seq_item_port      uvm_seq_item_pull_port       -     @3557
+      monitor              apb_monitor                  -     @4223
+        ap                 uvm_analysis_port            -     @4378
+      sequencer            apb_sequencer                -     @3587
+        rsp_export         uvm_analysis_export          -     @3696
+        seq_item_export    uvm_seq_item_pull_imp        -     @4244
+        arbitration_queue  array                        0     -    
+        lock_queue         array                        0     -    
+        num_last_reqs      integral                     32    'd1  
+        num_last_rsps      integral                     32    'd1  
+    apb_predictor          uvm_reg_predictor #(apb_tr)  -     @3286
+      bus_in               uvm_analysis_imp             -     @3405
+      reg_ap               uvm_analysis_port            -     @3456
+-------------------------------------------------------------------
+
+UVM_INFO apb_env.sv(45) @ 0: uvm_test_top.env [APB_ENV] APB Register Model:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Name                   Type                                                                   Size  Value                                                                                           
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+apb_reg_model          elastic_buffer_apb_regs_vendor_mohamed_tarek_library_flat_version_1_0  -     @3052                                                                                           
+  apb_map_eb_regs      T_eb_regs_24                                                           -     @3076                                                                                           
+    EB_COR_CFG_MAX     T_EB_COR_CFG_MAX_15                                                    -     @3112                                                                                           
+      cor_max          uvm_reg_field                                                          ...    RW EB_COR_CFG_MAX[5:0]=6'h00                                                                   
+    EB_COR_CFG_MIN     T_EB_COR_CFG_MIN_16                                                    -     @3122                                                                                           
+      cor_min          uvm_reg_field                                                          ...    RW EB_COR_CFG_MIN[5:0]=6'h00                                                                   
+    EB_COR_SEQ1        T_EB_COR_SEQ1_17                                                       -     @3138                                                                                           
+      cor_seq1         uvm_reg_field                                                          ...    RW EB_COR_SEQ1[19:0]=20'h00000                                                                 
+    EB_COR_SEQ2        T_EB_COR_SEQ2_18                                                       -     @3153                                                                                           
+      cor_seq2         uvm_reg_field                                                          ...    RW EB_COR_SEQ2[19:0]=20'h00000                                                                 
+    EB_CTRL            T_EB_CTRL_14                                                           -     @3168                                                                                           
+      enable           uvm_reg_field                                                          ...    RW EB_CTRL[0:0]=1'h0                                                                           
+    EB_ERR_STATUS      T_EB_ERR_STATUS_23                                                     -     @3183                                                                                           
+      err_status       uvm_reg_field                                                          ...    RO EB_ERR_STATUS[2:0]=3'h0                                                                     
+    EB_FILL_LEVEL      T_EB_FILL_LEVEL_19                                                     -     @3198                                                                                           
+      fill_level       uvm_reg_field                                                          ...    RO EB_FILL_LEVEL[5:0]=6'h00                                                                    
+    EB_SKP_ADD_CNT     T_EB_SKP_ADD_CNT_20                                                    -     @3213                                                                                           
+      skp_add_cnt      uvm_reg_field                                                          ...    RO EB_SKP_ADD_CNT[15:0]=16'h0000                                                               
+    EB_SKP_EVENT       T_EB_SKP_EVENT_22                                                      -     @3228                                                                                           
+      skp_drop_evt     uvm_reg_field                                                          ...    RO EB_SKP_EVENT[0:0]=1'h0                                                                      
+      skp_add_evt      uvm_reg_field                                                          ...    RO EB_SKP_EVENT[1:1]=1'h0                                                                      
+    EB_SKP_RM_CNT      T_EB_SKP_RM_CNT_21                                                     -     @3243                                                                                           
+      skp_rm_cnt       uvm_reg_field                                                          ...    RO EB_SKP_RM_CNT[15:0]=16'h0000                                                                
+    apb_map            uvm_reg_map                                                            0     id=@3065 seqr=uvm_test_top.env.apb_agt.sequencer offset=0x0 size=0xa000001e baseaddr=0x0        
+      apb_map_eb_regs  uvm_reg_map                                                            0     id=@3102 seqr=uvm_test_top.env.apb_agt.sequencer offset=0xa0000000 size=0x1d baseaddr=0xa0000000
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+UVM_INFO @ 0: reporter@@apb_ral_seq [STARTING_SEQ] 
+
+Starting apb_ral_seq sequence...
+
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 0: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_COR_CFG_MAX in map "apb_reg_model.apb_map"...
+UVM_INFO ./tb/apb_tb_top.sv(74) @ 50000000: reporter [TB_TOP] Reset deasserted
+UVM_INFO apb_driver.sv(23) @ 65000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa0000004 data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 65000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa0000004 data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 65000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_COR_CFG_MIN in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 95000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa0000008 data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 95000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa0000008 data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 95000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_COR_SEQ1 in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 125000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa000000c data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 125000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa000000c data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 125000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_COR_SEQ2 in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 155000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa0000010 data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 155000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa0000010 data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 155000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_CTRL in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 185000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa0000000 data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 185000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa0000000 data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 185000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_ERR_STATUS in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 215000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa0000024 data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 215000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa0000024 data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 215000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_FILL_LEVEL in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 245000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa0000014 data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 245000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa0000014 data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 245000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_SKP_ADD_CNT in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 275000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa0000018 data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 275000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa0000018 data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 275000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_SKP_EVENT in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 305000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa0000020 data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 305000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa0000020 data=0x00000000 wr_en=0
+UVM_INFO /opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/reg/sequences/uvm_reg_hw_reset_seq.svh(115) @ 305000000: reporter@@apb_ral_seq [uvm_reg_hw_reset_seq] Verifying reset value of register apb_reg_model.apb_map_eb_regs.EB_SKP_RM_CNT in map "apb_reg_model.apb_map"...
+UVM_INFO apb_driver.sv(23) @ 335000000: uvm_test_top.env.apb_agt.driver [apb_driver] Sent APB Transaction addr=0xa000001c data=0x00000000 wr_en=0
+UVM_INFO apb_monitor.sv(23) @ 335000000: uvm_test_top.env.apb_agt.monitor [apb_monitor] Monitored APB Transaction addr=0xa000001c data=0x00000000 wr_en=0
+
+--- UVM Report catcher Summary ---
+
+
+Number of demoted UVM_FATAL reports  :    0
+Number of demoted UVM_ERROR reports  :    0
+Number of demoted UVM_WARNING reports:    0
+Number of caught UVM_FATAL reports   :    0
+Number of caught UVM_ERROR reports   :    0
+Number of caught UVM_WARNING reports :    0
+
+--- UVM Report Summary ---
+
+** Report counts by severity
+UVM_INFO :   38
+UVM_WARNING :    0
+UVM_ERROR :    0
+UVM_FATAL :    0
+** Report counts by id
+[APB_ENV]     3
+[RNTST]     1
+[STARTING_SEQ]     1
+[TB_TOP]     1
+[UVMTOP]     1
+[apb_driver]    10
+[apb_monitor]    10
+[apb_ral_reset_test]     1
+[uvm_reg_hw_reset_seq]    10
+Simulation complete via $finish(1) at time 335 NS + 110
+/opt/rh/XCELIUM2009/tools/methodology/UVM/CDNS-1.1d/sv/src/base/uvm_root.svh:457     $finish;
+xcelium> exit
+xmsim: *N,COVCGN: Coverage configuration file command "set_covergroup -new_instance_reporting" can be specified to improve the scoping and naming of covergroup instances. It may be noted that subsequent merging of a coverage database saved with this command and a coverage database saved without this command is not allowed.
+
+coverage setup:
+  workdir  :  /home/icer/temp
+  dutinst  :  apb_wrapper_tb_top(apb_wrapper_tb_top)
+  scope    :  scope
+  testname :  apb_ral_reset_test
+
+coverage files:
+  model(design data) :  /home/icer/temp/scope/icc_00000000_4f3c45dd.ucm (reused)
+  data               :  /home/icer/temp/scope/apb_ral_reset_test/icc_00000000_4f3c45dd.ucd
+TOOL:	xrun(64)	20.09-s009: Exiting on Mar 22, 2020 at 20:42:52 +03  (total: 00:00:12)
