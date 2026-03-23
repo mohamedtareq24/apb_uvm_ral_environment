@@ -14,6 +14,9 @@ REG_OUT       ?= apb_wrapper_regs
 REG_PKG       ?= apb_wrapper_reg_pkg
 
 FILELIST ?= ./tb/run.f
+REG_UVMREG_DIR ?= ./reg_verifier_dir/uvmreg
+TB_DIR ?= ./
+REG_DAT_FILES ?= apb_wrapper_regs_hdlpaths.dat apb_wrapper_regs_config.dat
 
 # Output directories
 RUN_DIR  ?= sim/$(TEST)
@@ -44,7 +47,7 @@ XRUN_GUI_OPTS ?= \
     -gui \
     +UVM_TR_RECORD
 
-.PHONY: help sim elab run gui clean distclean cov regmodel
+.PHONY: help sim elab run gui clean distclean cov regmodel sync_reg_dat
 
 help:
 	@echo "Targets:"
@@ -55,8 +58,14 @@ help:
 
 regmodel:
 	$(REG_VERIFIER) -domain uvmreg -top $(IPXACT_TOP) -dut_name $(IPXACT_DUT) -top_level_class_name $(REG_TOP_CLASS) -out_file $(REG_OUT) -cov -quicktest -pkg $(REG_PKG)
+	@$(MAKE) sync_reg_dat
 
-sim: $(RUN_DIR)
+sync_reg_dat:
+	@mkdir -p $(TB_DIR)
+	@cp -f $(addprefix $(REG_UVMREG_DIR)/,$(REG_DAT_FILES)) $(TB_DIR)/
+	@echo "Copied reg .dat files to $(TB_DIR)"
+
+sim: $(RUN_DIR) sync_reg_dat
 	-$(XRUN) -f $(FILELIST) -top $(TOP) $(XRUN_LIB_OPTS) $(XRUN_OPTS) -l $(LOG_RUN) || echo "xrun exited with an error. Check $(LOG_RUN) for details."
 	@mkdir -p $(RUN_DIR)/cov_work
 	@if [ -d $(TEMP_DIR) ]; then \
@@ -67,10 +76,10 @@ sim: $(RUN_DIR)
 	fi
 
 # Split flow (optional)
-elab: $(RUN_DIR)
+elab: $(RUN_DIR) sync_reg_dat
 	$(XRUN) -f $(FILELIST) -top $(TOP) $(XRUN_LIB_OPTS) $(XRUN_OPTS) -l $(LOG_ELAB) -elaborate
 
-run:
+run: sync_reg_dat
 	-$(XRUN) -f $(FILELIST) -top $(TOP) $(XRUN_LIB_OPTS) $(XRUN_OPTS) -l $(LOG_RUN) || echo "xrun exited with an error. Check $(LOG_RUN) for details."
 	@mkdir -p $(RUN_DIR)/cov_work
 	@if [ -d $(TEMP_DIR) ]; then \
@@ -80,7 +89,7 @@ run:
 		echo "Directory $(TEMP_DIR) does not exist"; \
 	fi
 
-gui: $(RUN_DIR)
+gui: $(RUN_DIR) sync_reg_dat
 	$(XRUN) -f $(FILELIST) -top $(TOP) $(XRUN_LIB_OPTS) $(XRUN_OPTS) $(XRUN_GUI_OPTS) -l $(LOG_GUI)
 
 # Open Integrated Metrics Center (IMC) for coverage analysis

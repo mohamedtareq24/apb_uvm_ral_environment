@@ -76,6 +76,7 @@ module apb_wrapper_tb_top;
 
     initial begin
         uvm_config_db#(virtual apb_if)::set(null, "uvm_test_top.env.apb_agt", "vif", apb_if_i);
+        uvm_config_db#(string)::set(null, "uvm_test_top.env", "hdl_path_root", "apb_wrapper_tb_top.dut");
         run_test();
     end
 
