@@ -2,6 +2,7 @@
 // Contains all APB UVC components and classes
 package apb_pkg;
     import uvm_pkg::*;
+    import apb_wrapper_reg_pkg::*;
     `include "uvm_macros.svh"
 
     // Include all APB UVC components
@@ -10,8 +11,11 @@ package apb_pkg;
     `include "apb_monitor.sv"
     `include "apb_sequencer.sv"
     `include "apb_agent.sv"
+    `include "apb_adapter.sv"
     `include "apb_env.sv"
+
     `include "tb/apb_seq_lib.sv"
     `include "tb/apb_test_lib.sv"
+
 
 endpackage
