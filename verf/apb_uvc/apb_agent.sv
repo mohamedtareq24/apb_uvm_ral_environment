@@ -8,6 +8,7 @@ class apb_agent extends uvm_agent;
     apb_sequencer  sequencer;
     apb_monitor    monitor;
     
+    uvm_analysis_port#(apb_tr) apb_ap;
     virtual apb_if vif;
 
     function new(string name = "apb_agent", uvm_component parent = null);
@@ -30,12 +31,16 @@ class apb_agent extends uvm_agent;
         driver    = apb_driver::type_id::create("driver", this);
         sequencer = apb_sequencer::type_id::create("sequencer", this);
         monitor   = apb_monitor::type_id::create("monitor", this);
+        // Create analysis port
+        apb_ap = new("apb_ap", this);
     endfunction
 
     virtual function void connect_phase(uvm_phase phase);
         super.connect_phase(phase);
         // Connect driver to sequencer for transaction transfer
         driver.seq_item_port.connect(sequencer.seq_item_export);
+        // Connect monitor to agent analysis port
+        monitor.ap.connect(apb_ap);
     endfunction
 
 endclass
