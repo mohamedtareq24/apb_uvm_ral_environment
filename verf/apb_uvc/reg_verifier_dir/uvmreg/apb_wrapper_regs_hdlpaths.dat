@@ -9,11 +9,11 @@ r apb_map_eb_regs.EB_COR_SEQ2 reg_eb_cor_seq2 0 RTL 0 32
 f apb_map_eb_regs.EB_COR_SEQ2.cor_seq2 reg_eb_cor_seq2[19:0] 0 RTL 0 20
 r apb_map_eb_regs.EB_CTRL reg_eb_ctrl 0 RTL 0 32
 f apb_map_eb_regs.EB_CTRL.enable reg_eb_ctrl[0] 0 RTL 0 1
-f apb_map_eb_regs.EB_ERR_STATUS.err_status err_status_i 0 RTL 0 3
-f apb_map_eb_regs.EB_FILL_LEVEL.fill_level stat_fill_level_i 0 RTL 0 6
-f apb_map_eb_regs.EB_SKP_ADD_CNT.skp_add_cnt stat_cnt_add_i 0 RTL 0 16
-f apb_map_eb_regs.EB_SKP_EVENT.skp_drop_evt skp_drop_evt_pulse_i 0 RTL 0 1
-f apb_map_eb_regs.EB_SKP_EVENT.skp_add_evt skp_add_evt_pulse_i 0 RTL 1 1
-f apb_map_eb_regs.EB_SKP_RM_CNT.skp_rm_cnt stat_cnt_drop_i 0 RTL 0 16
+f apb_map_eb_regs.EB_ERR_STATUS.err_status reg_eb_err_status[2:0] 0 RTL 0 3
+f apb_map_eb_regs.EB_FILL_LEVEL.fill_level reg_eb_fill_level 0 RTL 0 6
+f apb_map_eb_regs.EB_SKP_ADD_CNT.skp_add_cnt reg_eb_skp_add_cnt 0 RTL 0 16
+f apb_map_eb_regs.EB_SKP_EVENT.skp_drop_evt reg_eb_skp_event[0] 0 RTL 0 1
+f apb_map_eb_regs.EB_SKP_EVENT.skp_add_evt reg_eb_skp_event[1] 0 RTL 1 1
+f apb_map_eb_regs.EB_SKP_RM_CNT.skp_rm_cnt reg_eb_skp_rm_cnt 0 RTL 0 16
 
 
