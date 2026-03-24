@@ -37,4 +37,28 @@ interface apb_if #(parameter int ADDR_WIDTH = 32, parameter int DATA_WIDTH = 32)
     input  prdata,
     input  pready
   );
+
+  // Driver clocking block: outputs are driven in a deterministic region.
+  clocking drv_cb @(posedge pclk);
+    default input #1step output #0;
+    output psel;
+    output penable;
+    output pwrite;
+    output paddr;
+    output pwdata;
+    input  prdata;
+    input  pready;
+  endclocking
+
+  // Monitor clocking block: sample all APB bus pins coherently.
+  clocking mon_cb @(posedge pclk);
+    default input #1step;
+    input psel;
+    input penable;
+    input pwrite;
+    input paddr;
+    input pwdata;
+    input prdata;
+    input pready;
+  endclocking
 endinterface

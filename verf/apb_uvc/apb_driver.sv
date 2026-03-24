@@ -17,6 +17,12 @@ class apb_driver extends uvm_driver#(apb_tr);
 
 
     virtual task run_phase(uvm_phase phase);
+        // Drive idle values from the clocking block domain.
+        vif.drv_cb.psel    <= 1'b0;
+        vif.drv_cb.penable <= 1'b0;
+        vif.drv_cb.pwrite  <= 1'b0;
+        vif.drv_cb.paddr   <= '0;
+        vif.drv_cb.pwdata  <= '0;
         forever begin
             seq_item_port.get_next_item(req);
             send_to_dut(req);
@@ -28,21 +34,23 @@ class apb_driver extends uvm_driver#(apb_tr);
     // Drive transaction on APB bus
     task send_to_dut(apb_tr tr);
         // Setup phase
-        @(posedge vif.pclk);
-        vif.psel   = 1;
-        vif.pwrite = tr.wr_en;
-        vif.paddr  = tr.addr;
-        vif.pwdata = tr.data;
-        vif.penable = 0;
+        @(vif.drv_cb);
+        vif.drv_cb.psel    <= 1'b1;
+        vif.drv_cb.pwrite  <= tr.wr_en;
+        vif.drv_cb.paddr   <= tr.addr;
+        vif.drv_cb.pwdata  <= tr.data;
+        vif.drv_cb.penable <= 1'b0;
         
         // Access phase  
-        @(posedge vif.pclk);
-        vif.penable = 1;
+        @(vif.drv_cb);
+        vif.drv_cb.penable <= 1'b1;
 
-        wait (vif.pready == 1);
-        @(posedge vif.pclk);
-        vif.psel    = 0;
-        vif.penable = 0;
+        @(vif.drv_cb);
+        if (tr.wr_en == 0) begin        // For read transactions, capture the read data
+            tr.data = vif.drv_cb.prdata;
+        end
+        vif.drv_cb.psel    <= 1'b0;
+        vif.drv_cb.penable <= 1'b0;
     endtask
 
 endclass

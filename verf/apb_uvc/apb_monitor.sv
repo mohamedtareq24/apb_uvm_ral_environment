@@ -28,19 +28,21 @@ class apb_monitor extends uvm_monitor;
 
     // Monitor transactions from APB interface
     task monitor_apb_transaction(apb_tr tr);
-        wait (vif.psel == 1);
-        tr.addr  = vif.paddr;
-        tr.wr_en = vif.pwrite;
+        @(vif.mon_cb);
+        wait(vif.mon_cb.psel === 1'b1);
+        tr.addr  = vif.mon_cb.paddr;
+        tr.wr_en = vif.mon_cb.pwrite;
         if (tr.wr_en == 1) begin
-            tr.data = vif.pwdata;
+            tr.data = vif.mon_cb.pwdata;
         end
-        wait (vif.penable == 1);
-        wait (vif.pready == 1);
+        
+        @(vif.mon_cb);
+        wait(vif.mon_cb.penable === 1'b1);
+
+        @(vif.mon_cb);
         if (tr.wr_en == 0) begin
-            tr.data = vif.prdata;
+            tr.data = vif.mon_cb.prdata;
         end
-        // Wait for transaction to terminate
-        wait (vif.psel == 0);
     endtask
 
 endclass
