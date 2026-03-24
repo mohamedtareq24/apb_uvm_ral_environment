@@ -22,5 +22,6 @@ class apb_adapter extends uvm_reg_adapter;
         rw.addr = tr.addr;
         rw.data = tr.data;
         rw.kind = (tr.wr_en == 1'b1) ? UVM_WRITE : UVM_READ;
+        rw.status = UVM_IS_OK;
     endfunction
 endclass
