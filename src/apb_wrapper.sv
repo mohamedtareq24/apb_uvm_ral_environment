@@ -25,48 +25,31 @@ module apb_wrapper #(parameter DATA_WIDTH = 32 , ADDR_WIDTH = 32 , BASE_ADDR = 3
         input   logic   [2:0]               err_status_i
     );
 
-    // ---------------------------------------------------------------------
-    // Minimal Register Map (word offsets from BASE_ADDR)
-    // 0x00 EB_CTRL        [0] enable
-    // 0x04 EB_COR_CFG_MAX [5:0] threshold for skp drops
-    // 0x08 EB_COR_CFG_MIN [5:0] threshold for skp inserstions
-    // 0x0C EB_COR_SEQ1    [19:0] // SKP sequence values for error correction 
-    // 0x10 EB_COR_SEQ2    [19:0] // SKP sequence values for error correction
-    
-    // 0x14 EB_FILL_LEVEL  [5:0]    (RO)
-    // 0x18 EB_SKP_ADD_CNT [15:0]   (RO)
-    // 0x1C EB_SKP_RM_CNT  [15:0]   (RO)
-    // 0x20 EB_SKP_EVENT   [1:0]    (RO)
-    // 0x24 EB_ERR_STATUS  [2:0]    (RO)
-    // ---------------------------------------------------------------------
+    // Writable registers (RW)
+    logic [DATA_WIDTH-1:0] reg_eb_ctrl;
+    logic [DATA_WIDTH-1:0] reg_eb_cor_cfg_max;
+    logic [DATA_WIDTH-1:0] reg_eb_cor_cfg_min;
+    logic [DATA_WIDTH-1:0] reg_eb_cor_seq1;
+    logic [DATA_WIDTH-1:0] reg_eb_cor_seq2;
 
+    // Read-only registers (RO) - synthesized from status inputs
+    logic [DATA_WIDTH-1:0] reg_eb_fill_level;
+    logic [DATA_WIDTH-1:0] reg_eb_skp_add_cnt;
+    logic [DATA_WIDTH-1:0] reg_eb_skp_rm_cnt;
+    logic [DATA_WIDTH-1:0] reg_eb_skp_event;
+    logic [DATA_WIDTH-1:0] reg_eb_err_status;
+
+    // Register indices for address decoding
     localparam int unsigned REG_EB_CTRL        = 0;
     localparam int unsigned REG_EB_COR_CFG_MAX = 1;
     localparam int unsigned REG_EB_COR_CFG_MIN = 2;
     localparam int unsigned REG_EB_COR_SEQ1    = 3;
     localparam int unsigned REG_EB_COR_SEQ2    = 4;
-
     localparam int unsigned REG_EB_FILL_LEVEL  = 5;
     localparam int unsigned REG_EB_SKP_ADD_CNT = 6;
     localparam int unsigned REG_EB_SKP_RM_CNT  = 7;
     localparam int unsigned REG_EB_SKP_EVENT   = 8;
     localparam int unsigned REG_EB_ERR_STATUS  = 9;
-
-    logic [DATA_WIDTH-1:0] reg_eb_ctrl;
-    logic [DATA_WIDTH-1:0] reg_eb_cor_cfg_max;
-    logic [DATA_WIDTH-1:0] reg_eb_cor_cfg_min;
-
-    logic [DATA_WIDTH-1:0] reg_eb_cor_seq1;
-    logic [DATA_WIDTH-1:0] reg_eb_cor_seq2;
-    logic [DATA_WIDTH-1:0] reg_eb_skp_event;
-    logic [DATA_WIDTH-1:0] reg_eb_err_status;
-
-    logic [5:0]            stat_fill_level_q;
-    logic [15:0]           stat_cnt_add_q;
-    logic [15:0]           stat_cnt_drop_q;
-    logic                  skp_add_evt_pulse_q;
-    logic                  skp_drop_evt_pulse_q;
-    logic [2:0]            err_status_q;
 
     logic [ADDR_WIDTH-1:0] addr_offs;
     logic [7:0]            addr_word;
@@ -85,62 +68,60 @@ module apb_wrapper #(parameter DATA_WIDTH = 32 , ADDR_WIDTH = 32 , BASE_ADDR = 3
     always_ff @(posedge pclk_i or negedge preset_n_i)
     begin
         if (!preset_n_i) begin
-            prdata_o            <= '0;
             reg_eb_ctrl         <= '0;
             reg_eb_cor_cfg_max  <= '0;
             reg_eb_cor_cfg_min  <= '0;
             reg_eb_cor_seq1     <= '0;
             reg_eb_cor_seq2     <= '0;
+            reg_eb_fill_level   <= '0;
+            reg_eb_skp_add_cnt  <= '0;
+            reg_eb_skp_rm_cnt   <= '0;
             reg_eb_skp_event    <= '0;
             reg_eb_err_status   <= '0;
-            stat_fill_level_q   <= '0;
-            stat_cnt_add_q      <= '0;
-            stat_cnt_drop_q     <= '0;
-            skp_add_evt_pulse_q <= 1'b0;
-            skp_drop_evt_pulse_q<= 1'b0;
-            err_status_q        <= '0;
         end 
         else begin
-            // Sample status inputs once per APB clock.
-            stat_fill_level_q    <= stat_fill_level_i;
-            stat_cnt_add_q       <= stat_cnt_add_i;
-            stat_cnt_drop_q      <= stat_cnt_drop_i;
-            skp_add_evt_pulse_q  <= skp_add_evt_pulse_i;
-            skp_drop_evt_pulse_q <= skp_drop_evt_pulse_i;
-            err_status_q         <= err_status_i;
+            // Sample and synchronize status inputs into RO registers
+            reg_eb_fill_level   <= {{(DATA_WIDTH-6){1'b0}},  stat_fill_level_i};
+            reg_eb_skp_add_cnt  <= {{(DATA_WIDTH-16){1'b0}}, stat_cnt_add_i};
+            reg_eb_skp_rm_cnt   <= {{(DATA_WIDTH-16){1'b0}}, stat_cnt_drop_i};
+            reg_eb_skp_event    <= {{(DATA_WIDTH-2){1'b0}},  skp_add_evt_pulse_i, skp_drop_evt_pulse_i};
+            reg_eb_err_status   <= {{(DATA_WIDTH-3){1'b0}},  err_status_i};
 
-            if (psel_i && penable_i && !pwrite_i) begin
+            if (psel_i && penable_i && pwrite_i) begin
                 case (addr_word)
-                    REG_EB_CTRL:        prdata_o <= reg_eb_ctrl;
-                    REG_EB_COR_CFG_MAX: prdata_o <= reg_eb_cor_cfg_max;
-                    REG_EB_COR_CFG_MIN: prdata_o <= reg_eb_cor_cfg_min;
-                    REG_EB_COR_SEQ1:    prdata_o <= reg_eb_cor_seq1;
-                    REG_EB_COR_SEQ2:    prdata_o <= reg_eb_cor_seq2;
-                    REG_EB_FILL_LEVEL:  prdata_o <= {{(DATA_WIDTH-6){1'b0}}, stat_fill_level_q};
-                    REG_EB_SKP_ADD_CNT: prdata_o <= {{(DATA_WIDTH-16){1'b0}}, stat_cnt_add_q};
-                    REG_EB_SKP_RM_CNT:  prdata_o <= {{(DATA_WIDTH-16){1'b0}}, stat_cnt_drop_q};
-                    REG_EB_SKP_EVENT:   prdata_o <= {{(DATA_WIDTH-2){1'b0}}, skp_add_evt_pulse_q, skp_drop_evt_pulse_q};
-                    REG_EB_ERR_STATUS:  prdata_o <= {{(DATA_WIDTH-3){1'b0}}, err_status_q};
-                    default:            prdata_o <= '0;
-                endcase
-            end
-            else if (psel_i && penable_i && pwrite_i) begin
-                case (addr_word)
-                    REG_EB_CTRL:     reg_eb_ctrl     <= pwdata_i;
-                    REG_EB_COR_CFG_MAX: reg_eb_cor_cfg_max <= pwdata_i;
-                    REG_EB_COR_CFG_MIN: reg_eb_cor_cfg_min <= pwdata_i;
-                    REG_EB_COR_SEQ1: reg_eb_cor_seq1 <= pwdata_i;
-                    REG_EB_COR_SEQ2: reg_eb_cor_seq2 <= pwdata_i;
+                    REG_EB_CTRL:        reg_eb_ctrl        <= {{(DATA_WIDTH-1){1'b0}}, pwdata_i[0]};
+                    REG_EB_COR_CFG_MAX: reg_eb_cor_cfg_max <= {{(DATA_WIDTH-6){1'b0}}, pwdata_i[5:0]};
+                    REG_EB_COR_CFG_MIN: reg_eb_cor_cfg_min <= {{(DATA_WIDTH-6){1'b0}}, pwdata_i[5:0]};
+                    REG_EB_COR_SEQ1:    reg_eb_cor_seq1    <= {{(DATA_WIDTH-20){1'b0}}, pwdata_i[19:0]};
+                    REG_EB_COR_SEQ2:    reg_eb_cor_seq2    <= {{(DATA_WIDTH-20){1'b0}}, pwdata_i[19:0]};
                     default: /* no-op */;
                 endcase
             end
         end
     end
 
-    // Drive configuration outputs from registers
+    always_comb begin
+        prdata_o = '0;
+        if (psel_i && penable_i && !pwrite_i) begin
+            case (addr_word)
+                REG_EB_CTRL:        prdata_o = reg_eb_ctrl;
+                REG_EB_COR_CFG_MAX: prdata_o = reg_eb_cor_cfg_max;
+                REG_EB_COR_CFG_MIN: prdata_o = reg_eb_cor_cfg_min;
+                REG_EB_COR_SEQ1:    prdata_o = reg_eb_cor_seq1;
+                REG_EB_COR_SEQ2:    prdata_o = reg_eb_cor_seq2;
+                REG_EB_FILL_LEVEL:  prdata_o = reg_eb_fill_level;
+                REG_EB_SKP_ADD_CNT: prdata_o = reg_eb_skp_add_cnt;
+                REG_EB_SKP_RM_CNT:  prdata_o = reg_eb_skp_rm_cnt;
+                REG_EB_SKP_EVENT:   prdata_o = reg_eb_skp_event;
+                REG_EB_ERR_STATUS:  prdata_o = reg_eb_err_status;
+                default:            prdata_o = '0;
+            endcase
+        end
+    end
+
+    // Drive configuration outputs from RW registers
     assign cfg_cor_max_o       = reg_eb_cor_cfg_max[5:0];
     assign cfg_cor_min_o       = reg_eb_cor_cfg_min[5:0];
     assign cfg_cor_seq_val_1_o = reg_eb_cor_seq1[19:0];
     assign cfg_cor_seq_val_2_o = reg_eb_cor_seq2[19:0];
-
 endmodule

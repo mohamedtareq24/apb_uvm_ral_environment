@@ -185,7 +185,7 @@
             <ipxact:bitWidth>6</ipxact:bitWidth>
             <ipxact:vendorExtensions>
               <cadence:extensions>
-                <cadence:hdlAccess cadence:path="stat_fill_level_i"/>
+                <cadence:hdlAccess cadence:path="reg_eb_fill_level"/>
               </cadence:extensions>
             </ipxact:vendorExtensions>
           </ipxact:field>
@@ -209,7 +209,7 @@
             <ipxact:bitWidth>16</ipxact:bitWidth>
             <ipxact:vendorExtensions>
               <cadence:extensions>
-                <cadence:hdlAccess cadence:path="stat_cnt_add_i"/>
+                <cadence:hdlAccess cadence:path="reg_eb_skp_add_cnt"/>
               </cadence:extensions>
             </ipxact:vendorExtensions>
           </ipxact:field>
@@ -233,7 +233,7 @@
             <ipxact:bitWidth>16</ipxact:bitWidth>
             <ipxact:vendorExtensions>
               <cadence:extensions>
-                <cadence:hdlAccess cadence:path="stat_cnt_drop_i"/>
+                <cadence:hdlAccess cadence:path="reg_eb_skp_rm_cnt"/>
               </cadence:extensions>
             </ipxact:vendorExtensions>
           </ipxact:field>
@@ -257,7 +257,7 @@
             <ipxact:bitWidth>1</ipxact:bitWidth>
             <ipxact:vendorExtensions>
               <cadence:extensions>
-                <cadence:hdlAccess cadence:path="skp_drop_evt_pulse_i"/>
+                <cadence:hdlAccess cadence:path="reg_eb_skp_event[0]"/>
               </cadence:extensions>
             </ipxact:vendorExtensions>
           </ipxact:field>
@@ -273,7 +273,7 @@
             <ipxact:bitWidth>1</ipxact:bitWidth>
             <ipxact:vendorExtensions>
               <cadence:extensions>
-                <cadence:hdlAccess cadence:path="skp_add_evt_pulse_i"/>
+                <cadence:hdlAccess cadence:path="reg_eb_skp_event[1]"/>
               </cadence:extensions>
             </ipxact:vendorExtensions>
           </ipxact:field>
@@ -297,7 +297,7 @@
             <ipxact:bitWidth>3</ipxact:bitWidth>
             <ipxact:vendorExtensions>
               <cadence:extensions>
-                <cadence:hdlAccess cadence:path="err_status_i"/>
+                <cadence:hdlAccess cadence:path="reg_eb_err_status[2:0]"/>
               </cadence:extensions>
             </ipxact:vendorExtensions>
           </ipxact:field>
