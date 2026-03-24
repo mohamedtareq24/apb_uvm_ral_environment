@@ -46,7 +46,7 @@ class apb_driver extends uvm_driver#(apb_tr);
         vif.drv_cb.penable <= 1'b1;
 
         @(vif.drv_cb);
-        if (tr.wr_en == 0) begin        // For read transactions, capture the read data
+        if (tr.wr_en == 0 && vif.drv_cb.pready == 1) begin        // For read transactions, capture the read data
             tr.data = vif.drv_cb.prdata;
         end
         vif.drv_cb.psel    <= 1'b0;

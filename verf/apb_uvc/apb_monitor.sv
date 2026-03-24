@@ -40,7 +40,7 @@ class apb_monitor extends uvm_monitor;
         wait(vif.mon_cb.penable === 1'b1);
 
         @(vif.mon_cb);
-        if (tr.wr_en == 0) begin
+        if (tr.wr_en == 0 && vif.mon_cb.pready == 1) begin
             tr.data = vif.mon_cb.prdata;
         end
     endtask
